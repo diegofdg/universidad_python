@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Flask Academy - Listado de Cursos{% endblock %}
+
+{% block navbar_buttons %}
+<a href="/agregar" class="btn btn-warning fw-semibold">
+  <i class="bi bi-plus-lg me-1"></i> Agregar Curso
+</a>
+{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-warning mb-4 fw-bold">Listado de cursos</h2>
+
+<div class="table-responsive">
+  <table class="table table-dark table-hover align-middle text-center">
+    <thead class="table-dark border-bottom border-warning">
+      <tr class="text-warning">
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Instructor</th>
+        <th>Duración (hrs)</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for curso in cursos %}
+      <tr>
+        <td>{{ curso.id_curso }}</td>
+        <td>{{ curso.nombre }}</td>
+        <td>{{ curso.instructor }}</td>
+        <td>{{ "%.2f"|format(curso.duracion) }}</td>
+        <td>
+          <a href="{{ url_for('editar', id_curso=curso.id_curso) }}" class="btn btn-sm btn-warning me-1">
+            <i class="bi bi-pencil-fill"></i> Editar
+          </a>
+
+          <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar{{ curso.id_curso }}">
+            <i class="bi bi-trash-fill"></i> Eliminar
+          </button>
+
+          <!-- Modal de confirmación -->
+          <div class="modal fade" id="modalEliminar{{ curso.id_curso }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content bg-dark text-light border border-warning">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title text-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmar eliminación
+                  </h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  ¿Seguro que deseas eliminar el curso <strong>{{ curso.nombre }}</strong>?
+                </div>
+                <div class="modal-footer border-0">
+                  <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <a href="{{ url_for('eliminar', id_curso=curso.id_curso) }}" class="btn btn-danger">
+                    <i class="bi bi-trash3-fill me-1"></i> Eliminar
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" class="text-muted">No hay cursos registrados.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
