@@ -1,0 +1,163 @@
+✅ Prompt final (Angular + Bootstrap oscuro + inject)
+
+Quiero que seas mi mentor experto en Angular usando la última versión de Angular y me guíes en UNA sola conversación para construir un CRUD de Recursos Humanos con Angular (frontend) contra un backend ya listo en http://localhost:8080/api
+ con endpoints:
+
+GET /empleados
+
+GET /empleados/:id
+
+POST /empleados
+
+PUT /empleados/:id
+
+DELETE /empleados/:id
+
+📌 Reglas de la guía
+
+Dame el proyecto paso a paso en 4 fases, dentro de esta misma conversación:
+
+Fase 1: Listar (solo lectura)
+
+Fase 2: Agregar (+ navbar Bootstrap por CDN)
+
+Fase 3: Editar (carga por :id)
+
+Fase 4: Eliminar (confirm + refrescar lista)
+
+En cada fase haz lo siguiente:
+
+Lista los comandos Angular CLI a ejecutar (ng new, ng g c, etc.).
+
+Indica exactamente qué archivos debo crear o modificar (con su ruta).
+
+Pega el código completo de cada archivo en bloques de código (para copiar/pegar).
+
+Explica por qué agregamos cada parte (1–2 líneas por archivo).
+
+Da una Prueba rápida (ruta a visitar, botón a presionar).
+
+Incluye Solución de problemas típica (CORS, rutas, errores comunes).
+
+⚙️ Requisitos técnicos
+
+Usa Angular moderno.
+
+El proyecto se debe crear en la ruta C:\Cursos\Angular con el nombre rh-app.
+
+Al ejecutar la creación del proyecto:
+
+cd C:\Cursos\Angular
+ng new rh-app
+
+
+Y responde:
+
+Would you like to add Angular routing? → Yes
+
+Which stylesheet format would you like to use? → CSS
+
+Bootstrap por CDN en index.html:
+
+Agrega el atributo data-bs-theme="dark" en <html> para activar el modo oscuro.
+
+Usa provideHttpClient, signals y control de flujo @for.
+
+Navbar Bootstrap en app.component.html con links a “Listado” y “Agregar”.
+
+Los componentes deben generarse con HTML separado y usando --skip-tests para no crear archivos de prueba.
+
+Ejemplos:
+
+ng g c empleados/lista --skip-tests
+ng g c empleados/agregar --skip-tests
+ng g c empleados/editar --skip-tests
+
+🧩 Modelo de datos
+export interface Empleado {
+  idEmpleado: number;
+  nombre: string;
+  departamento: string;
+  sueldo: number;
+}
+
+📡 Servicio EmpleadoServicio
+
+Crea un servicio con HttpClient usando inject() y una base URL fija http://localhost:8080/api/empleados.
+
+Los métodos deben ser:
+
+obtenerEmpleados(): Observable<Empleado[]>
+
+obtenerEmpleadoPorId(id: number): Observable<Empleado>
+
+agregarEmpleado(empleado: Empleado): Observable<Empleado>   // quita idEmpleado antes de enviar
+
+editarEmpleado(id: number, empleado: Empleado): Observable<Empleado>  // manda objeto completo
+
+eliminarEmpleado(id: number): Observable<{message: string}>
+
+
+👉 Regla: usar inject() en lugar de constructores donde sea posible.
+
+🚦 Rutas de la app (simplificadas)
+export const routes: Routes = [
+  { path: 'empleados', component: ListaComponent },
+  { path: 'agregar-empleado', component: AgregarComponent },
+  { path: 'editar-empleado/:id', component: EditarComponent },
+  { path: '', redirectTo: 'empleados', pathMatch: 'full' }
+];
+
+📌 Detalles de implementación
+
+Orden correcto de trabajo en cada fase:
+
+Crear proyecto.
+
+Agregar Bootstrap en index.html (con modo oscuro).
+
+Crear el modelo y el servicio.
+
+Crear el componente de esa fase (ejemplo: ListaComponent).
+
+Configurar app.config.ts, app.routes.ts, app.component.ts, app.component.html.
+
+En la lista, declara:
+
+empleados = signal<Empleado[]>([]);
+private empleadoService = inject(EmpleadoServicio);
+
+
+En editar:
+
+private empleadoService = inject(EmpleadoServicio);
+private route = inject(ActivatedRoute);
+
+
+En eliminar: usar confirm() antes de borrar y refrescar la lista con this.cargar().
+
+🔑 Importante
+
+No asumas que ya existen archivos: en cada fase pega el contenido completo de lo que se crea o modifica.
+
+Mantén el código simple (template-driven forms para alta/edición).
+
+Después de cada fase, espera a que yo confirme con “listo” antes de avanzar a la siguiente.
+
+🚀 Comienza ahora
+
+Empieza con la Fase 1 (Listar):
+
+Crea el proyecto (si no existe).
+
+Agrega Bootstrap en modo oscuro en index.html.
+
+Crea el modelo Empleado y el servicio EmpleadoServicio usando inject().
+
+Genera el componente de lista con --skip-tests y usa inject(EmpleadoServicio) en lugar de constructor.
+
+Configura app.config.ts, app.routes.ts, app.component.ts, app.component.html.
+
+Implementa la tabla Bootstrap con signals y @for.
+
+Dame una Prueba rápida y Solución de problemas.
