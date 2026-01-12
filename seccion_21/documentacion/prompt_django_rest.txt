@@ -1,0 +1,107 @@
+🎯 Prompt maestro simplificado — Proyecto Django REST “rh_django” (con CORS)
+
+🎯 Crea un proyecto completo en Django REST Framework llamado rh_django, que implemente un API REST de empleados con MySQL, aplicando buenas prácticas y explicando paso a paso en orden pedagógico (sin saltos de tiempo ni comandos fuera de lugar).
+La guía debe mostrar archivos completos listos para copiar y pegar, no fragmentos.
+
+🔧 Requisitos generales
+
+IDE recomendado: PyCharm (puede ser otro).
+
+Ruta base: C:\Cursos\Python\rh_django
+
+API en puerto 8080 → http://localhost:8080/api/empleados
+
+Base de datos: recursos_humanos_db (MySQL, usuario root, contraseña admin).
+
+Tabla: empleado con campos:
+
+idEmpleado (PK autoincremental)
+
+nombre (texto, requerido)
+
+departamento (texto, requerido)
+
+sueldo (decimal(10,2), > 0)
+
+Validaciones básicas.
+
+No usar autenticación ni paginación.
+
+Incluir soporte CORS (instalar y configurar django-cors-headers) para permitir peticiones desde:
+
+http://localhost:4200 (Angular)
+
+http://localhost:5173 (React con Vite)
+
+Respetar separación de responsabilidades (models.py, serializers.py, views.py, urls.py, settings.py).
+
+Pruebas con Postman.
+
+🧩 Orden que debe seguir la guía generada
+
+Preparar entorno — instalación de dependencias (sin ejecutar migraciones aún).
+
+Incluir instalación de django-cors-headers junto con Django, DRF y PyMySQL.
+
+Crear proyecto y app — mostrar estructura resultante.
+
+Editar settings.py — mostrar archivo completo con:
+
+Conexión MySQL.
+
+Configuración REST Framework.
+
+Configuración completa de CORS:
+
+INSTALLED_APPS con 'corsheaders'.
+
+MIDDLEWARE con 'corsheaders.middleware.CorsMiddleware' antes de SecurityMiddleware.
+
+CORS_ALLOWED_ORIGINS con los puertos de React y Angular.
+
+Crear modelo Empleado — archivo completo models.py.
+
+Crear serializer — archivo completo serializers.py con validaciones básicas.
+
+Crear vistas — archivo completo views.py usando generics.
+
+Configurar URLs — empleados/urls.py y rh_django/urls.py completos.
+
+Crear base de datos y ejecutar migraciones — mostrar comandos SQL y Django.
+
+Ejecutar servidor en puerto 8080.
+
+Pruebas con Postman — listar, buscar, crear, editar y eliminar empleados.
+
+Mostrar estructura final y todos los archivos completos listos para copiar y pegar.
+
+🧾 Formato de archivos en la guía
+
+Incluir la RUTA COMPLETA de cada archivo (por ejemplo:
+C:\Cursos\Python\rh_django\rh_django\settings.py).
+
+Indicar si el archivo es NUEVO o EXISTENTE.
+
+Resaltar los CAMBIOS IMPORTANTES realizados (por ejemplo: “se agregó conexión MySQL”, “se configuró CORS”, “se añadió modelo Empleado”, etc.).
+
+🧠 Instrucciones de redacción
+
+El contenido debe ser una guía completa, no solo pasos.
+
+Explicar brevemente qué hace cada comando antes de ejecutarlo.
+
+Mostrar archivos completos (no fragmentos).
+
+Mantener el orden pedagógico (nunca ejecutar migraciones antes de definir el modelo).
+
+Al final, incluir la estructura completa del proyecto y las pruebas Postman.
+
+💡 Objetivo final
+
+El resultado debe ser un proyecto Django REST totalmente funcional, con CORS configurado,
+ejecutable con:
+
+python manage.py runserver 8080
+
+
+y probando sus endpoints CRUD en Postman desde aplicaciones React o Angular sin errores de CORS.
