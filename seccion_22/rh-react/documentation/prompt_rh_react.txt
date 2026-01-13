@@ -1,0 +1,82 @@
+Script — Sistema de Empleados en React con Vite
+
+Quiero que actúes como un mentor técnico y me guíes paso a paso en la creación de un sistema de Recursos Humanos con React usando Vite como herramienta de arranque. 
+El objetivo es desarrollar una aplicación de empleados dividido en 4 fases:
+1. Listar empleados
+2. Agregar empleado
+3. Editar empleado
+4. Eliminar empleado
+
+falto agregar el backend de la app ....
+---
+
+Reglas de entrega
+- No muestres todas las fases de golpe.
+- Al terminar cada fase, pregunta: “¿Listo/a para la siguiente fase?” y detente hasta que confirme.
+- En cada fase, la entrega debe incluir:
+  1. Qué cambió: bloque breve en viñetas explicando lo nuevo respecto a la fase anterior.
+  2. Archivos completos con la ruta exacta.
+  3. Si un archivo no cambió, indícalo con “sin cambios”.
+  4. Los comandos que deben ejecutarse en esa fase, y para cada comando una breve explicación de qué hace y por qué se usa.
+  5. Al final de cada fase, indicar que el alumno debe probar en el navegador el caso trabajado usando el comando correspondiente para levantar el servidor.
+- El código debe ser compacto y claro, sin atributos de accesibilidad extra.
+- Usa axios (no fetch).
+- Usa Bootstrap por CDN en index.html con data-bs-theme="dark".
+- Usa react-number-format para mostrar el campo de sueldo.
+- Usa react-router-dom solo a partir de la fase 2 (no antes).
+- No agregues librerías adicionales.
+- No uses TypeScript, solo JavaScript.
+- No obvies pasos: incluye instalación, estructura de carpetas, imports, etc.
+
+---
+
+Entorno y ruta
+- Carpeta base: C:\Cursos\React\
+- Proyecto: rh-react
+- IDE: Visual Studio Code
+
+---
+
+Fase inicial (setup)
+- Entrega todos los archivos completos iniciales y un bloque de “Qué cambió”.
+- Incluye los comandos necesarios para crear el proyecto con Vite, instalar dependencias, abrir en VS Code y ejecutar en el navegador.
+- Para cada comando, da una explicación breve de lo que hace.
+- Al final de esta fase, indica que se debe probar en el navegador que la aplicación arranca correctamente usando el comando correspondiente para levantar el servidor.
+- Después pregunta si sigo con la Fase 1.
+
+---
+
+Fase 1 — Listar empleados
+- Implementar src/empleados/ListadoEmpleados.jsx con tabla Bootstrap (ID, Nombre, Departamento, Sueldo, Acciones).
+- Cargar datos con axios desde la constante urlBase.
+- Incluir botones Editar y Eliminar sin lógica aún.
+- Mostrar sueldo con NumericFormat.
+- Nota: aún no hay barra de navegación ni rutas.
+- Entregar archivos completos, bloque de “Qué cambió”, y los comandos usados con explicación.
+- Al final de esta fase, indicar que se debe probar en el navegador el listado de empleados.
+
+---
+
+Fase 2 — Agregar empleado
+- Instalar react-router-dom.
+- Crear Navegacion.jsx.
+- Configurar rutas en App.jsx.
+- Implementar AgregarEmpleado.jsx con formulario controlado.
+- Entregar archivos completos, bloque de “Qué cambió”, y los comandos usados con explicación.
+- Al final de esta fase, indicar que se debe probar en el navegador la navegación y el alta de un empleado nuevo.
+
+---
+
+Fase 3 — Editar empleado
+- Implementar EditarEmpleado.jsx con useParams, axios GET y PUT.
+- Botones Guardar y Regresar.
+- Entregar archivos completos, bloque de “Qué cambió”, y los comandos usados con explicación.
+- Al final de esta fase, indicar que se debe probar en el navegador la edición de un empleado existente.
+
+---
+
+Fase 4 — Eliminar empleado
+- Completar lógica de Eliminar en ListadoEmpleados.jsx con confirm(), axios DELETE y recarga de lista.
+- Entregar archivos completos, bloque de “Qué cambió”, y los comandos usados con explicación.
+- Al final de esta fase, indicar que se debe probar en el navegador la eliminación de un empleado y comprobar que la lista se actualiza.
+- Agregar breve lista de pruebas manuales (crear, editar, eliminar, navegar).
