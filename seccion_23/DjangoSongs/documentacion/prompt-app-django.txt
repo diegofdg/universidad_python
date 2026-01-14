@@ -1,0 +1,319 @@
+🧠 PROYECTO DJANGO SONGS – CRUD PASO A PASO
+===========================================
+
+📣 INSTRUCCIONES GENERALES
+---------------------------
+Quiero que actúes como mi mentor experto en Django.
+Vamos a construir paso a paso un CRUD completo con Django, Bootstrap y MySQL,
+siguiendo las fases dentro de esta misma conversación (sin saltar ninguna).
+
+Después de cada fase, debes esperar a que yo confirme con la palabra “listo”
+antes de avanzar a la siguiente. Así el proceso será completamente interactivo.
+
+⚠️ MUY IMPORTANTE (APLICA EN TODAS LAS FASES)
+- Siempre muestra los **archivos completos (no fragmentos)**.
+- En cada fase indica si cada archivo es **(NUEVO)** o **(MODIFICADO)**.
+- Muestra las **rutas completas** para evitar confusiones.
+- Respeta la arquitectura en **3 capas**:
+  - MODELO (acceso a datos) → `canciones/models.py`
+  - SERVICIO (lógica de negocio) → `canciones/services/song_service.py`
+  - VISTA (controladores/plantillas) → `canciones/views.py` + `templates/`
+- Bootstrap por **CDN** y modo oscuro con `<html lang="es" data-bs-theme="dark">`.
+- **Explica por qué** de cada archivo/cambio importante.
+- **Orden estricto**: primero **comandos** necesarios y **después el código**.
+- No muestres código hasta que exista la estructura o se haya corrido el comando que la crea.
+- En cada fase solamente muestra los archivos necesarios y los comandos minimos para cada fase
+  no agregues todavia creacion de archivos, carpetas o comandos que no vayan en cierta fase
+  espera hasta que sea su momento, asi haremos cada fase lo mas ligera posible
+- Los pasos deben ser secuenciales (paso a paso) no debe mostrar primero comandos y luego mencionar archivo y 
+  despues el codigo, sino deber ir paso a paso, sin tener que regresar a ver las instrucciones nuevamente, paso a paso  
+  
+
+🧩 DESCRIPCIÓN GENERAL
+-----------------------
+Crearemos un sistema llamado Django Songs, para registrar canciones favoritas:
+
+Tabla: canciones
+- id
+- titulo (cadena)
+- artista (cadena)
+- popularidad (numérico, 1–10)
+
+Contexto: un catálogo musical personal, fácil de hacer y visualmente atractivo.
+
+Las explicaciones deben ser claras, simples y didácticas,
+pero detalladas cuando sea necesario, con ejemplos y **código completo listo para copiar y pegar**.
+
+📌 OBJETIVO
+------------
+Generar una guía paso a paso para crear mi aplicación DjangoSongs,
+usando Windows como sistema operativo y PyCharm como IDE.
+
+⚙️ TECNOLOGÍAS Y DEPENDENCIAS
+-------------------------------
+- Django (última versión estable 5.x)
+- **PyMySQL** (conector MySQL puro-Python, más sencillo de instalar en Windows)
+- django-environ (manejo de variables de entorno desde .env)
+- Bootstrap por CDN (sin archivos estáticos locales)
+- Cualquier otra que sea necesaria para completar correctamente el CRUD.
+
+🧱 ESTRUCTURA BASE ESPERADA (REFERENCIA)
+----------------------------------------
+C:\Cursos\Django\DjangoSongs\
+│
+├── manage.py
+├── django_songs\
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── canciones\
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py                 ← Formularios Django
+│   ├── models.py                ← MODELO (acceso a datos)
+│   ├── urls.py
+│   ├── views.py                 ← VISTA (controladores Django)
+│   └── services\                ← SERVICIO (lógica de negocio)
+│       ├── __init__.py
+│       └── song_service.py
+├── templates\
+│   ├── base.html
+│   ├── index.html               ← listado (READ)
+│   └── canciones_form.html      ← crear/editar (CREATE/UPDATE)
+└── .env                         ← variables de entorno (sin extensión)
+
+📁 Descripción:
+- settings.py → configuración principal (SECRET_KEY, DB, templates, etc.)
+- models.py → MODELO: definición de la entidad Cancion.
+- services/song_service.py → SERVICIO: centraliza la lógica CRUD (crear/listar/editar/eliminar).
+- views.py → VISTA: recibe la petición, llama al servicio y pasa datos a las plantillas.
+- templates → vistas con Bootstrap dark por CDN.
+- .env → nunca debe tener extensión (.txt, .py, etc).
+
+🧩 BASE DE DATOS
+-----------------
+Nombre BD (solo pruebas): django_songs_db
+Tabla: id (autoincrement), titulo (string), artista (string), popularidad (int 1–10)
+Conexión (solo pruebas): usuario=root, password=admin, host=localhost, puerto=3306
+⚠️ Recomendar cambiar usuario y contraseña al finalizar el proyecto por seguridad.
+
+Ruta sugerida del proyecto:
+C:\Cursos\Django\DjangoSongs
+
+======================================================================
+🧭 FASES DEL PROYECTO (CON COMANDOS Y RUTAS CLARAS)
+======================================================================
+
+FASE 1: PREPARACIÓN E INSTALACIÓN
+----------------------------------
+Objetivo:
+- Crear el proyecto Django y la app principal con rutas claras.
+- Configurar plantilla base con Bootstrap en modo oscuro.
+- Mostrar portada “Django Songs” (verde + 🎧) centrada.
+
+Comandos (usaremos PyCharm; la activación del venv suele ser automática en PyCharm):
+1) Crear carpeta base (si no existe):
+   mkdir C:\Cursos\Django\DjangoSongs
+
+2) Instalar dependencias principales:
+   pip install Django PyMySQL django-environ
+
+3) Crear proyecto Django (dentro de C:\Cursos\Django\DjangoSongs) (explica que hace el .):
+   django-admin startproject django_songs .
+
+4) Entrar a la carpeta del proyecto:
+   cd C:\Cursos\Django\DjangoSongs
+
+5) Crear la aplicación principal:
+   python manage.py startapp canciones
+
+6) Crear carpetas para plantillas y servicios:
+   mkdir C:\Cursos\Django\DjangoSongs\templates
+   mkdir C:\Cursos\Django\DjangoSongs\canciones\services
+
+(Después de estos comandos, ahora sí muestra **código completo** de:)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\django_songs\settings.py
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\django_songs\urls.py
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\views.py
+- (NUEVO)      C:\Cursos\Django\DjangoSongs\canciones\urls.py
+- (NUEVO)      C:\Cursos\Django\DjangoSongs\canciones\services\song_service.py
+- (NUEVO)      C:\Cursos\Django\DjangoSongs\templates\base.html
+- (NUEVO)      C:\Cursos\Django\DjangoSongs\templates\index.html
+- (NUEVO)      C:\Cursos\Django\DjangoSongs\.env  ← si se crea aquí, recordar: **SIN EXTENSIÓN**
+
+Notas de la fase:
+- Explica que `SECRET_KEY` sirve para firmar cookies/sesiones y CSRF.
+- `base.html` debe incluir `<html lang="es" data-bs-theme="dark">`, Navbar y título “Django Songs” con 🎧 en verde.
+- la barra de navegacion se debe de agregar hasta la fase de agregar, no en este punto, aca es lo mas simple posible
+- no se debe usar plantillas base todavia en este punto, esto hacerl hasta la fase de agregar, alli agregamos 
+  la plantilla base, por lo tanto tampoco crear las carpetas que aun no se requieren
+- en esta fase no crear todavia la carpeta de servicio, hasta que sea necesaria en fases posteriores
+  dejar esta fase lo mas simple posible 
+
+FASE 2: CONEXIÓN CON MYSQL (usando PyMySQL)
+-------------------------------------------
+Objetivo:
+- Configurar MySQL en settings usando django-environ y .env.
+- Registrar PyMySQL como reemplazo compatible de MySQLdb.
+- Probar conexión mostrando el index.
+
+Comandos:
+1) (Por si faltó) instalar:  pip install PyMySQL django-environ
+2) Crear BD (si no existe) desde MySQL/Workbench:
+   CREATE DATABASE django_songs_db CHARACTER SET utf8mb4;
+3) Verificar `.env` en:
+   C:\Cursos\Django\DjangoSongs\.env    (SIN EXTENSIÓN)
+   Variables mínimas:
+   - DEBUG=True
+   - DB_NAME=django_songs_db
+   - DB_USER=root
+   - DB_PASSWORD=admin
+   - DB_HOST=localhost
+   - DB_PORT=3306
+
+4) **Registrar PyMySQL como MySQLdb**:
+   En el archivo del proyecto:
+   - (MODIFICADO) C:\Cursos\Django\DjangoSongs\django_songs\__init__.py
+     Debe contener (código completo) la instrucción:
+       import pymysql
+       pymysql.install_as_MySQLdb()
+
+(Después de estos comandos, muestra **código completo** de:)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\django_songs\__init__.py  ← registra PyMySQL
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\django_songs\settings.py   ← lectura de .env y DATABASES con ENGINE='django.db.backends.mysql'
+- (NUEVO/CONFIRMAR) C:\Cursos\Django\DjangoSongs\.env
+
+Prueba:
+- `python manage.py runserver` y visitar http://127.0.0.1:8000/
+- Si falla, revisar ruta y extensión del `.env` o credenciales.
+
+FASE 3: CREACIÓN DEL MODELO
+----------------------------
+Objetivo:
+- Definir `Cancion` con validación de popularidad (1–10).
+- Aplicar migraciones.
+
+Comandos:
+1) python manage.py makemigrations
+2) python manage.py migrate
+
+(Después de los comandos, muestra **código completo** de:)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\models.py
+  Campos: titulo (CharField), artista (CharField), popularidad (IntegerField con validators 1–10)
+- (MODIFICADO opcional) C:\Cursos\Django\DjangoSongs\canciones\admin.py (registro de Cancion)
+
+Agregar esto a la clase: 
+class Meta:
+        db_table = 'cancion'   # nombre personalizado
+        verbose_name = 'Canción'
+        verbose_name_plural = 'Canciones'
+
+Verificación:
+- Tabla creada en MySQL Workbench.
+- Servidor sigue ejecutando.
+
+Sugerencia de esta fase:
+- Configurar la seccion de admin de django para ver o modificar registros 
+  con el comando: python manage.py createsuperuser
+- registrar los modulos en admin para que puedan administrarse
+- Cargar algunos registros de prueba desde admin o Workbench.
+- El nombre de la tabla debe ser solo: cancion (no debe ser canciones_cancion, es muy largo)
+- indicar como acceder a la seccion de admin de django y ver los datos 
+
+
+FASE 4: CASO DE LISTAR (READ)
+------------------------------
+Objetivo:
+- Mostrar en portada el listado de canciones.
+- Vista llama al Servicio; Servicio accede al Modelo.
+
+(Primero crea rutas si faltan y luego muestra **código completo** de:)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\services\song_service.py
+  Función: obtener_todas()
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\views.py
+  Vista ‘index’ que llama al servicio y envía contexto
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\templates\index.html
+  Tabla con Bootstrap en modo oscuro
+- En esta fase crear la capa de servicio (canciones/services/cancion_services.py y asi usarlo en las siguientes fases)
+  confirmar que incluya un archivo __init__.py para que no tenga problemas este modulo
+
+Sugerencia:
+- Cargar algunos registros de prueba desde admin o Workbench.
+
+FASE 5: CASO AGREGAR (CREATE)
+------------------------------
+Objetivo:
+- Formulario para crear canciones (Forms de Django).
+- Guardar vía Servicio y redirigir al listado.
+
+(Primero agrega/ajusta rutas; después **código completo** de:)
+- (NUEVO)      C:\Cursos\Django\DjangoSongs\canciones\forms.py
+  Form con validaciones (1–10 para popularidad)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\services\song_service.py
+  Función: crear_cancion(datos)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\views.py
+  Vista create: GET (form) / POST (guardar y redirect)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\urls.py
+  Rutas para crear
+- (NUEVO)      C:\Cursos\Django\DjangoSongs\templates\canciones_form.html
+  Plantilla reutilizable (create/update) con CSRF token
+
+FASE 6: CASO EDITAR (UPDATE)
+-----------------------------
+Objetivo:
+- Reutilizar el mismo formulario para editar.
+- Actualizar vía Servicio y redirigir al listado.
+
+(Primero rutas; luego **código completo** de:)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\services\song_service.py
+  Función: actualizar_cancion(id, datos)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\views.py
+  Vista update: GET (cargar datos) / POST (guardar cambios)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\urls.py
+  Ruta para editar
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\templates\canciones_form.html
+  (misma plantilla, completa)
+
+FASE 7: CASO ELIMINAR (DELETE)
+-------------------------------
+Objetivo:
+- Eliminar con POST (no GET) y CSRF.
+- Confirmación con modal de Bootstrap o vista intermedia.
+
+(Primero rutas; luego **código completo** de:)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\services\song_service.py
+  Función: eliminar_cancion(id)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\views.py
+  Vista delete (POST)
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\canciones\urls.py
+  Ruta para eliminar
+- (MODIFICADO) C:\Cursos\Django\DjangoSongs\templates\index.html
+  Botón “Eliminar” + modal (o confirmación)
+
+======================================================================
+📋 EN CADA FASE INCLUIR (OBLIGATORIO)
+======================================================================
+1) Lista de comandos o pasos exactos a ejecutar.
+2) Archivos a crear o modificar (con **rutas completas** y marcado NUEVO/MODIFICADO).
+3) **Código completo y actualizado** (listo para copiar y pegar; sin fragmentos).
+4) Explicación breve de por qué se hace cada parte.
+5) Prueba rápida (qué ruta visitar o acción realizar).
+6) Soluciones a errores típicos.
+7) No pedir crear archivos que aún no se usarán; solo en su fase correspondiente.
+
+⚙️ REQUISITOS TÉCNICOS
+-----------------------
+- Usar Django moderno (5.x) y buenas prácticas de arquitectura.
+- El proyecto se crea en: C:\Cursos\Django\DjangoSongs
+- No usar archivos estáticos locales (Bootstrap por CDN).
+- Cada fase muestra **archivos completos** de lo que se modifica/crea.
+- Mantener el orden lógico: primero el código y luego los comandos (ej. migraciones).
+- Esperar confirmación con “listo” antes de avanzar a la siguiente fase.
+
+Al terminar todas las fases me felicitas por haber concluido exitosamente cada fase 
+
+🚀 INICIO
+----------
+Comienza ahora con la FASE 1.
