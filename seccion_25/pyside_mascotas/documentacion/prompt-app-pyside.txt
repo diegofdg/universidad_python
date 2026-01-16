@@ -1,0 +1,462 @@
+Ejecuta el siguiente prompt sin saltarte ninguna instrucción:
+
+🧠 PROYECTO PYSIDE MASCOTAS – GUÍA COMPLETA PASO A PASO (Dark Mode con QDarkStyle)
+====================================================================================
+
+👋 **Bienvenida**
+-----------------
+Construiremos una **aplicación de escritorio** en **modo oscuro** con **PySide6 (Qt for Python)** y **QDarkStyle** para un **Sistema de Adopción de Mascotas** 🐾.  
+El objetivo es un **CRUD** completo usando **SQLAlchemy**, **Alembic** y **MySQL** como base de datos; y **PySide6** para la interfaz.
+
+Cada fase incluye:
+- 🔍 **Por qué** (contexto)
+- 🧱 **Qué hacer** (instrucciones)
+- 💡 **Tips** (buenas prácticas / errores comunes)
+
+> **Modo oscuro**: aplicaremos **QDarkStyle** desde la **Fase 1** para que toda la app luzca dark desde el primer arranque.
+
+---
+
+📣 INSTRUCCIONES GENERALES
+---------------------------
+⚠️ MODO INTERACTIVO ESTRICTO
+
+REGLAS DE AVANCE POR FASES
+1) Muestra EXACTAMENTE **una sola fase por respuesta**.
+2) **No anticipes** fases futuras, ni listados, ni resúmenes de lo que viene.
+3) Finaliza SIEMPRE con una línea de cierre:
+   👉 “¿Continuamos? Responde: **listo** para la siguiente fase.” Indica cual es la fase y lo que viene para que sepamos donde estamos
+4) Solo avanza cuando el usuario escriba la palabra **listo**
+   - Si el usuario escribe “listo fase X”, muestra la **fase X**.
+   - Si el usuario solo escribe “listo”, muestra la **siguiente fase secuencial** si es que no la especifico, indicale cual sigue para que no se pierda
+5) Si el usuario hace una pregunta fuera de la guía, respóndela brevemente y termina con:
+   👉 “¿Retomamos la guía? Escribe: **listo**” e indica en que fase va para que no se pierda
+6) No incluyas código de fases posteriores ni “sneak peeks”.
+7) Cada paso debe indicar **ruta + nombre del archivo** y si es **(NUEVO)** o **(MODIFICADO)**.
+8) Usa `# [NUEVO]` y `# [MODIFICADO]` **solo** cuando agregues o cambies líneas en **archivos ya existentes**.  
+   👉 En **archivos nuevos**, **no** uses esas marcas.
+   Si es [NUEVO] o [MODIFICADO] todo un metodo, entonces solo ponerlo al inicio para no hacerlo en cada linea y asi no ensuciar demasiado el codigo
+   pero si solo son algunas lineas de un metodo entonces si indicar directamente en la linea lo que es [NUEVO] o [MODIFICADO]
+9) Agregar comentarios generales de lo que hace cada bloque de codigo y/o funcion para tener una referencia clara
+10) Si detectas que ya mostraste una fase, **no la repitas** a menos que el usuario pida “repetir fase X”.
+
+
+📦 RESUMEN VISUAL DE ARCHIVOS EN CADA FASE
+--------------------------------------------
+Antes de comenzar **cada fase**, genera un bloque con el título:  
+📁 NUEVOS ARCHIVOS / MODIFICACIONES
+
+
+Debe mostrar la **estructura del proyecto en formato árbol** (`│ ├── └──`) indicando:  
+- Los **archivos nuevos** con la etiqueta **(NUEVO)**  
+- Los **archivos modificados** con la etiqueta **(MODIFICADO)**  
+- Mantén el nombre del proyecto en la raíz (por ejemplo, `pyside_mascotas/`)  
+- Usa el estilo visual mostrado en el ejemplo (alineado, limpio y con emojis si aplica)  
+
+> Este bloque debe aparecer **antes de las instrucciones** de cada fase,  
+> para que se identifique rápidamente qué archivos se crearán o modificarán.
+
+
+---
+
+🎯 CONTEXTO DEL SISTEMA
+------------------------
+**Sistema de Adopción de Mascotas** para un refugio digital. Se administrará el catálogo de mascotas adoptables.
+
+---
+
+📊 ESTRUCTURA DE DATOS
+-----------------------
+Tabla principal: `mascotas`
+
+| Campo   | Tipo     | Descripción                                   |
+|---------|----------|-----------------------------------------------|
+| id      | Entero   | Llave primaria autoincremental                |
+| nombre  | Cadena   | Nombre de la mascota                          |
+| especie | Cadena   | Especie (perro, gato, ave, etc.)              |
+| peso    | Numérico | Peso en kilogramos (permite decimales)        |
+
+---
+
+⚙️ TECNOLOGÍAS USADAS
+----------------------
+- **PySide6** → interfaz de escritorio Qt (ventanas, formularios, tablas).
+- **QDarkStyle** → tema oscuro profesional para Qt.
+- **SQLAlchemy** → ORM para modelado y consultas MySQL.
+- **Alembic** → migraciones automáticas del esquema.
+- **python-dotenv** → variables de entorno (.env).
+- **PyMySQL** → conector MySQL.
+- **MySQL** → base de datos relacional.
+
+---
+
+🧱 ESTRUCTURA DEL PROYECTO
+---------------------------
+- `C:\Cursos\PySide\pyside_mascotas\`
+  - `app.py`
+  - `migrate.py`
+  - `database.py`
+  - `.env`
+  - `alembic.ini`
+  - `models\`
+    - `mascota.py`
+  - `services\`
+    - `mascota_service.py`
+  - `views\`
+    - `home_view.py`
+    - `form_view.py`
+
+---
+
+💾 CONFIGURACIÓN DE BASE DE DATOS
+----------------------------------
+Archivo **`.env`** (sin extensión):
+
+
+DB_USER=root
+DB_PASS=admin
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=pyside_mascotas_db
+
+- Mantén credenciales fuera del código.
+- **No** subas `.env` a repos públicos.
+- Cambia estos valores por otros más seguros en producción.
+
+---
+
+==================================================
+🚀 FASES DEL PROYECTO
+==================================================
+
+
+### 🎯 FASE 1: CREACIÓN DEL PROYECTO Y MODO OSCURO (QDarkStyle)
+**Por qué:** Validar entorno, dependencias y una ventana base **con dark theme** desde el inicio.
+
+**Qué hacer:**
+1) **Crear proyecto en PyCharm**  
+   - Ruta base: `C:\Cursos\PySide\`  
+   - Nombre: **pyside_mascotas**  
+   - Ruta final: `C:\Cursos\PySide\pyside_mascotas`  
+   - Activa **entorno virtual (venv)**.
+
+2) Usar el intérprete 3.13 para este proyecto (recomendado) con PySide.
+- En PyCharm:  
+  Settings → Python → Interpreter → Add Interpreter → Base Python: 3.13.x → seleccionar .venv1 (No el existente)  
+  Opcionalmente puedes eliminar el .venv anterior, ya no se necesita, solo dejar el nuevo .venv1 que apunta a la version 3.13
+  Confirmar que el proyecto usa el nuevo .venv1 para que detecte la nueva version 3.13
+**Por qué:** PySide6 aún no publica ruedas para 3.14+; 3.13 es estable y compatible.
+
+3) **Actualizar e instalar dependencias**  
+   - Actualiza `pip`.  
+     ```
+     python.exe -m pip install --upgrade pip
+     ```
+   - Instala:
+     ```
+     pip install PySide6 qdarkstyle SQLAlchemy Alembic python-dotenv PyMySQL cryptography
+     ```
+     > `qdarkstyle` provee el tema; `cryptography` es necesaria para autenticación de MySQL 8+ (caching_sha2_password).
+
+### 🎯 FASE 2: CREACIÓN DEL PRIMERA PANTALLA EN MODO OSCURO (QDarkStyle)
+**Por qué:** Crear una primera pantalla en modo oscuro con un titulo
+
+ **Archivo (NUEVO): `app.py`**  
+   👉 **Genera el archivo completo `app.py`, listo para copiar y pegar.  
+   
+   El archivo debe incluir:
+
+   - Creación de la **QApplication** y carga del tema oscuro con **QDarkStyle**.  
+   - Creación de un **QMainWindow** con título: **“🐾 PySide Mascotas”**. Usa el emoticon indicado si es posible 
+   - **Tamaño inicial: 1280 × 720 px**.  
+   - **Ajuste automático al redimensionar** usando:
+     - `QVBoxLayout`
+     - `QWidget` como central widget
+     - **SizePolicy.Expanding** en contenedores principales
+     - Sin tamaños fijos
+   - Encabezado con:
+     - **Título grande (20 pt, bold) centrado**
+     - **Subtítulo centrado**
+   - Uso correcto de `AlignCenter`.
+
+**Validación:** Ejecutar `python app.py`.  
+Debe mostrarse:  
+✔ Modo oscuro  
+✔ Ventana inicial **1280×720**  
+✔ Encabezados centrados  
+✔ Título más grande  
+✔ Contenidos que se adaptan al redimensionar  
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+
+---
+
+### 🧩 FASE 3: CONEXIÓN CON MYSQL
+**Por qué:** Tener un motor de BD listo con credenciales seguras.
+
+**Qué hacer:**
+- **Crear BD**: `pyside_mascotas_db` en MySQL Workbench.
+
+- **Archivo (NUEVO): `.env`**  
+  - Agregar las variables de conexión (usuario, contraseña, host, puerto y nombre de base de datos).
+
+- **Archivo (NUEVO): `database.py`**  
+  - Cargar el archivo `.env` usando `load_dotenv()`.  
+  - Construir la URL de conexión en formato  
+    `mysql+pymysql://usuario:password@host:puerto/base`.  
+  - Crear:
+    - **engine**  
+    - **Session** con `sessionmaker`  
+    - **Base** con `declarative_base()`  
+  - **Prueba de conexión (actualizada):**  
+    - NO usar `SELECT` ni ninguna sentencia SQL.  
+    - La prueba debe abrir una conexión (`engine.connect()`) y mostrar un mensaje de éxito incluyendo el objeto de conexión.  
+    - En caso de error, capturar la excepción y mostrar un mensaje claro de falla.
+
+- Ejecutar `database.py` y validar que la conexión sea exitosa.
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 🐶 FASE 4: CREACIÓN DEL MODELO
+**Por qué:** Modelar con SQLAlchemy permite migraciones y consultas limpias.
+
+**Qué hacer:**
+- **Archivo (NUEVO): `models\mascota.py`**  
+  - Definir **class Mascota(Base)** con columnas: `id`, `nombre`, `especie`, `peso`.  
+  - Importar `Base` desde `database.py`.
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 🧱 FASE 5: MIGRACIONES AUTOMÁTICAS (ALEMBIC)
+**Por qué:** Sincronizar modelos con la BD de forma segura y versionada.
+
+**Qué hacer:**
+1) Inicializar Alembic: `alembic init alembic` (verificar `alembic\` y `alembic.ini`).
+2) Configurar `alembic.ini`: ajustar `sqlalchemy.url` con la URL de la BD.
+**Busca exactamente la línea:**
+sqlalchemy.url = driver://user:pass@localhost/dbname
+**Reemplázala COMPLETAMENTE por esta URL lista para copiar y pegar:**
+sqlalchemy.url = mysql+pymysql://root:admin@localhost:3306/pyside_mascotas_db
+3) Editar `alembic\env.py`:
+En la zona de imports agrega:
+   - `from database import Base`
+   - `from models import mascota`
+Luego **busca esta línea**:
+   - `target_metadata = Base.metadata`
+**Reemplázala por:**
+   - target_metadata = Base.metadata
+4) **Archivo (NUEVO): `migrate.py`** (automatizar) (debes generar el archivo con lo siguiente):  
+   - Cargar `.env`.  
+   - Detectar y limpiar **alembic_version** huérfana si aplica.  
+   - Generar revisión autogenerada y aplicar **upgrade head**.  
+5) Ejecutar `python migrate.py` y verificar tabla **mascotas** en MySQL.
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 📋 FASE 6: LISTAR MASCOTAS (READ) – PRIMERA VERSIÓN EN UNA SOLA VENTANA
+**Por qué:** Validar fin a fin la integración entre BD → modelo → servicio → UI, mostrando los datos reales en pantalla.
+
+**Qué hacer:**
+
+- Generar un SQL para Insertar **3 mascotas** de ejemplo en MySQL Workbench (SQL directo).
+
+- **Archivo (MODIFICADO): `app.py`**  
+  Genera el código completo para que el archivo `app.py` incluya lo siguiente:
+
+  #### ✔ Diseño visual y distribución
+  - Mantener el **título principal** y el **subtítulo** centrados.
+  - La tabla debe aparecer **debajo del subtítulo**, no hasta abajo.
+  - NO debe existir separación vertical exagerada entre encabezados y tabla.
+  - Evitar que el layout “empuje” la tabla al fondo:  
+    - Usar `layout.setAlignment(Qt.AlignTop)`  
+    - Usar márgenes superiores e inferiores moderados.
+    - No usar `layout.addStretch()`.
+
+  #### ✔ Contenedor central profesional
+  - La UI debe comportarse como un dashboard:
+    - Encabezado arriba.
+    - Subtítulo debajo.
+    - Tabla inmediatamente después del subtítulo.
+  - **No centrar verticalmente.**
+  - **No permitir que la tabla se desplace hacia el fondo cuando la ventana es grande.**
+
+  #### ✔ Configuración profesional de la tabla (`QTableView`)
+  La tabla debe:
+  - Ajustar automáticamente el ancho de **todas las columnas** para rellenar el espacio.
+  - No mostrar scroll horizontal.
+  - Mostrar scroll vertical solo si es necesario.
+  - Ocultar la **cabecera vertical**.
+  - Eliminar bordes azules o frames con una hoja de estilo.
+  - Conservar filas con altura consistente.
+  - Recordatorio importante:  
+    Si usas la constante antigua:
+    ```
+    header.setSectionResizeMode(i, header.Stretch)
+    ```
+    debe reemplazarse por:
+    ```
+    header.setSectionResizeMode(i, QHeaderView.Stretch)
+    ```
+
+  #### ✔ Adaptabilidad (responsive)
+  - La tabla debe adaptarse correctamente al crecimiento o reducción de la ventana.
+  - La tabla debe mantener su estética:
+    - centrada
+    - con ancho máximo agradable
+    - sin ocupar todo el espacio sobrante
+  - Evitar que se despegue demasiado del encabezado.
+  - Mantener un estilo tipo dashboard moderno en modo oscuro.
+
+  #### ✔ Lógica
+  - Implementar una función temporal `obtener_todos()` para cargar los registros y llenar el modelo del `QTableView`.
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+
+---
+
+### 🧭 FASE 7: REFACTORIZACIÓN Y SEPARACIÓN EN CAPAS
+**Por qué:** Organización profesional y mantenible.
+
+**Qué hacer:**
+- **Archivos (NUEVOS):**  
+  - `services\mascota_service.py` → acceso a datos. Solo agrega el codigo necesario, no adelantes nada que no sea estrictamente necesario
+  - `views\home_view.py` → widget principal del listado.  
+- **Archivo (MODIFICADO): `app.py`**  
+  - Dejar configuración de la app, ventana, QDarkStyle y ensamblaje de vistas.
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 🧱 FASE 8: BASE DE NAVEGACIÓN (MENÚ / TOOLBAR / STACKED)
+**Por qué:** Navegar entre **Inicio (lista)** y **Formulario (alta/edición)**.
+
+**Qué hacer:**
+- **Archivo (NUEVO): `views\form_view.py`** (se poblará en la siguiente fase).  
+- **Archivo (MODIFICADO): `app.py`**  
+  - Agregar **menú/toolbar** con acciones: **Inicio** y **Agregar Mascota**.  
+  - Implementar **QStackedWidget** o cambio de `centralWidget`.
+  
+Nota: Si usas la constante QAction, recuerda que se importa como sigue para no tener errores:
+from PySide6.QtGui import QAction
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 🐾 FASE 9: AGREGAR MASCOTA (FORMULARIO)
+**Por qué:** Capturar nuevos registros con validación básica visual.
+
+**Qué hacer:**
+- **Archivo (MODIFICADO): `views\form_view.py`**  
+  - Formulario con **nombre**, **especie**, **peso** (QFormLayout).  
+  - Botones **Guardar** (sin acción) y **Cancelar** (volver a Inicio).  
+  - Encabezado centrado.  
+  - Comentario conceptual: **“mostrar formulario vacío”**.
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 💾 FASE 10: GUARDAR NUEVA MASCOTA
+**Por qué:** Persistir registros en BD con validaciones.
+
+**Qué hacer:**
+- **Archivo (MODIFICADO): `services\mascota_service.py`** → `crear(datos)` con validaciones.  
+  Solo agrega el codigo necesario, no adelantes nada que no sea estrictamente necesario
+- **Archivo (MODIFICADO): `views\form_view.py`** → conectar botón **Guardar** (**procesar y guardar**), mensajes de éxito/error, volver a Inicio y refrescar tabla.
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### ✏️ FASE 11: EDITAR – ACTIVAR EDICIÓN POR DOBLE CLIC EN EL LISTADO  
+**Por qué:** Habilitar la edición de una mascota de manera profesional y limpia, sin botones dentro de la tabla. Este enfoque evita desalineaciones, mantiene el diseño centrado y aprovecha la estructura estable de `QTableView`.
+
+**Qué hacer:**
+- **Archivo (MODIFICADO): `views\home_view.py`**
+  - Mantener `QTableView` como componente principal del listado.
+  - Asegurar una tabla **centrada** dentro de un contenedor con límites de ancho.
+  - Confirmar que las columnas usen **`QHeaderView.Stretch`** para conservar el diseño adaptable.
+  - Dejar la tabla como **solo lectura**, evitando cualquier edición directa sobre celdas.
+  - Implementar la señal **`doubleClicked`** para detectar cuando el usuario hace doble clic en una fila.
+  - Al recibir el doble clic:
+    - Obtener el **ID** del registro seleccionado.
+    - Enviar el **ID** al formulario mediante el callback de edición.
+  - Con esta estructura, la tabla mantiene un layout estable y el centrado no se perderá en ninguna fase posterior.
+  - En esta fase que al menos muestre un texto del id que se va a editar por que parece que no se hizo nada si no se muestra ningun cambio 
+    (QMessageBox)
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+
+---
+
+### 🔎 FASE 12: EDITAR – SERVICIO PARA RECUPERAR POR ID
+**Por qué:** Cargar datos en el formulario antes de editar.
+
+**Qué hacer:**
+- **Archivo (MODIFICADO): `services\mascota_service.py`** → `obtener_por_id(id)` y prueba rápida. No agregar mas metodos que los necesarios en esta fase
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 🧭 FASE 13: EDITAR – FORMULARIO PRECARGADO
+**Por qué:** Mostrar el formulario con los datos existentes.
+
+**Qué hacer:**
+- **Archivo (MODIFICADO): `views\form_view.py`**  
+  - Precargar campos con `obtener_por_id`.  
+  - Comentario conceptual: **“cargar y mostrar formulario con datos”**.  
+  - Botones **Guardar cambios** / **Cancelar**.
+  - Ya no mostrar ninguna alerta QMessageBox que no sea estrictamente necesaria para esta fase
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 💾 FASE 14: EDITAR – GUARDAR CAMBIOS
+**Por qué:** Persistir modificaciones.
+
+**Qué hacer:**
+- **Archivo (MODIFICADO): `services\mascota_service.py`** → `actualizar(id, datos)`.  
+  Solo agrega el codigo necesario, no adelantes nada que no sea estrictamente necesario
+- **Archivo (MODIFICADO): `views\form_view.py`** → **procesar y actualizar**, mensaje de éxito y refresco del listado.
+
+👉 ¿Continuamos? Responde: **listo** para la siguiente fase.
+
+---
+
+### 🗑️ FASE 15: ELIMINAR MASCOTA (DELETE)
+**Por qué:** Completar CRUD con confirmación.
+
+**Qué hacer:**
+- **Archivo (MODIFICADO): `services\mascota_service.py`** → `eliminar(id)`.  
+  Solo agrega el codigo necesario, no adelantes nada que no sea estrictamente necesario
+- **Archivo (MODIFICADO): `views\form_view.py`** → botón **Eliminar** con confirmación, ademas de los botones ya existentes en el formulario  
+- Agregar una confirmacion simple antes de eliminar
+
+---
+
+✨ Al llegar a este punto, antes de concluir muestra lo siguiente:
+-------------
+¡Felicidades! Has diseñado una app **CRUD de escritorio** en **modo oscuro** con **PySide6 + QDarkStyle** para un **Sistema de Adopción de Mascotas** 🐾.  
+Aprendiste a:
+- Configurar proyecto y entorno profesional con dark mode desde el inicio.  
+- Modelar la tabla **mascotas** (id, nombre, especie, peso).  
+- Sincronizar esquema con Alembic (autogeneración y resolución de versiones).  
+- Diseñar UI con PySide6 (encabezados centrados, **tamaño inicial 1280×720**, **adaptación automática por layouts/size policies**).  
+- Implementar el flujo completo: **listar, crear, editar y eliminar** con validaciones y buena UX.
+
+🚀 **INICIO**
+-------------
+Comienza ahora ejecutando el prompt desde el inicio
