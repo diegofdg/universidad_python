@@ -1,0 +1,912 @@
+Ejecuta el siguiente prompt sin saltarte ninguna instrucción:
+
+🧠 PROYECTO FASTAPI BIBLIOTECA – GUÍA COMPLETA PASO A PASO (Backend REST con MySQL)
+====================================================================================
+
+👋 **Bienvenida**
+-----------------
+Construiremos un **backend REST** con **FastAPI** para una **Biblioteca Personal** 📚.  
+El objetivo es crear una **API RESTful completa** (CRUD) usando:
+
+- **FastAPI** para exponer endpoints.
+- **SQLAlchemy + Alembic** para acceso a datos y migraciones.
+- **MySQL** como base de datos.
+- **Pydantic** para validaciones de entrada/salida.
+- **CORS** configurado para permitir consumo desde Angular/React.
+- Ejecución final en **http://localhost:8080/api/libros**.
+
+Cada fase incluye:
+- 🔍 **Por qué** (contexto)
+- 🧱 **Qué hacer** (instrucciones para generar código y archivos)
+- 💡 **Tips** (buenas prácticas / errores comunes en FastAPI)
+
+> Las respuestas deben generar **archivos completos listos para copiar y pegar**, nunca fragmentos sueltos.
+
+---
+
+📣 INSTRUCCIONES GENERALES
+---------------------------
+⚠️ MODO INTERACTIVO ESTRICTO (POR FASES)
+
+REGLAS DE AVANCE POR FASES
+1) Muestra EXACTAMENTE **una sola fase por respuesta**.
+2) **No anticipes** fases futuras, ni listados, ni resúmenes de lo que viene.
+3) Finaliza SIEMPRE con una línea de cierre que indique dónde estamos y qué sigue, por ejemplo:  
+   👉 `¿Continuamos? Responde: **listo** para la siguiente fase (Fase X).`
+4) Solo avanza cuando el usuario escriba la palabra **listo**:
+   - Si el usuario escribe `listo fase X`, muestra la **Fase X**.
+   - Si el usuario solo escribe `listo`, muestra la **siguiente fase secuencial** e indica claramente cuál es.
+5) Si el usuario hace una pregunta fuera de la guía, respóndela brevemente y termina con:  
+   👉 `¿Retomamos la guía? Escribe: **listo** para continuar desde la Fase X.`  
+   (indica siempre en qué fase va).
+6) No incluyas código de fases posteriores ni “sneak peeks”.
+7) Cada paso debe indicar **ruta + nombre del archivo** y si es **(NUEVO)** o **(MODIFICADO)**.
+8) Usa comentarios `# [NUEVO]` y `# [MODIFICADO]` **solo** cuando agregues o cambies líneas en **archivos ya existentes**.  
+   👉 En **archivos nuevos**, **no** uses esas marcas.  
+   👉 Si todo el método es nuevo o modificado, marca solo al inicio del método con `# [NUEVO]` para no marcar cada línea de método.
+9) Agrega comentarios claros en el código explicando qué hace cada bloque / función importante.
+10) Si detectas que ya mostraste una fase, **no la repitas** a menos que el usuario pida explícitamente: `repetir fase X`.
+
+---
+
+🎯 CONTEXTO DEL SISTEMA
+------------------------
+**Sistema: Biblioteca Personal** 📚  
+Se administrará un catálogo de libros personales, con posibilidad de consultar, agregar, editar y eliminar libros.
+
+---
+
+📊 ESTRUCTURA DE DATOS
+-----------------------
+Tabla principal: `libros`
+
+Campos:
+
+- `id` → Entero, **llave primaria autoincremental**
+- `titulo` → Cadena de texto, **obligatorio**
+- `autor` → Cadena de texto, **obligatorio**
+- `rating` → Entero, **obligatorio**, con valor entre **1 y 5**
+
+Validaciones mínimas:
+
+- `titulo` y `autor` no pueden estar vacíos.
+- `rating` debe ser un entero entre 1 y 5 (inclusive).
+
+---
+
+⚙️ TECNOLOGÍAS USADAS
+----------------------
+- **FastAPI** → Framework web para construir APIs rápidas y tipadas.
+- **Uvicorn** → Servidor ASGI para ejecutar FastAPI.
+- **SQLAlchemy** → ORM para modelar y consultar MySQL.
+- **Alembic** → Migraciones automáticas del esquema.
+- **Pydantic** → Modelos de validación para requests/responses.
+- **python-dotenv** → Carga de variables de entorno desde `.env`.
+- **PyMySQL** → Conector MySQL.
+- **MySQL** → Base de datos relacional.
+- **CORS Middleware** de FastAPI → Para permitir acceso desde Angular/React.
+
+---
+
+🧱 ESTRUCTURA BASE DEL PROYECTO
+-------------------------------
+Ruta sugerida en Windows:
+
+- `C:\Cursos\FastAPI\biblioteca_fastapi\`
+
+Estructura objetivo (se construirá fase por fase):
+
+- `biblioteca_fastapi\`
+  - `main.py`
+  - `database.py`
+  - `models\`
+    - `libro.py`
+  - `schemas.py`
+  - `.env`
+  - `alembic.ini`
+  - `alembic\` (carpeta generada por Alembic)
+  - `services\`
+    - `libro_service.py`
+  - `api\`
+    - `libros.py`
+
+La API deberá exponer los endpoints bajo el prefijo:
+
+- `http://localhost:8080/api/libros`
+
+(no usar autenticación ni paginación en este proyecto).
+
+---
+
+💾 CONFIGURACIÓN DE BASE DE DATOS
+----------------------------------
+Base de datos en MySQL (sugerida):
+
+- Nombre: `biblioteca_db`
+- Usuario: `root`
+- Contraseña: `admin`
+- Host: `localhost`
+- Puerto: `3306`
+
+Archivo **`.env`** debe almacenar estas variables (sin exponerlas en repos públicos).  
+La URL de conexión seguirá el formato:
+
+- `mysql+pymysql://usuario:password@host:puerto/base_de_datos`
+
+---
+
+📦 RESUMEN VISUAL DE ARCHIVOS EN CADA FASE
+--------------------------------------------
+Despues de explicar de que trata **cada fase**, genera un bloque con el título:
+
+📁 NUEVOS ARCHIVOS / MODIFICACIONES
+
+Debe mostrar la **estructura del proyecto en formato árbol** (`│ ├── └──`) indicando:
+
+- Los **archivos nuevos** con la etiqueta **(NUEVO)**  
+- Los **archivos modificados** con la etiqueta **(MODIFICADO)**  
+- Mantén el nombre del proyecto en la raíz, por ejemplo: `biblioteca_fastapi/`  
+- Usa estilo visual limpio, alineado y con emojis si aplica.
+
+> Este bloque debe aparecer **despues del titulo y la explicacion general de cada fase**,  
+> para identificar rápidamente qué archivos se crearán o modificarán.
+
+---
+
+==================================================
+🚀 FASES DEL PROYECTO (BACKEND FASTAPI)
+==================================================
+
+
+### 🎯 FASE 1: CREACIÓN DEL PROYECTO Y ENTORNO VIRTUAL
+
+**Por qué:** Definir una estructura clara desde el inicio y un entorno aislado para el backend.
+
+**Qué hacer:**
+
+- Crear la carpeta base del proyecto:
+  - Ruta: `C:\Cursos\FastAPI\biblioteca_fastapi\`
+
+- Crear y activar un entorno virtual para el proyecto.
+
+- Actualizar la herramienta de pip:
+  - `python.exe -m pip install --upgrade pip`
+
+- Instalar dependencias mínimas (indicando los comandos a ejecutar en la consola de Windows):
+  - `fastapi`
+  - `uvicorn[standard]`
+  - `SQLAlchemy`
+  - `Alembic`
+  - `python-dotenv`
+  - `PyMySQL`
+  - `cryptography`
+
+- Verificar que el entorno quede correctamente asociado en el IDE (por ejemplo, PyCharm).
+
+💡 Tips (explicativos, sin código de FastAPI todavía):
+- Explicar brevemente qué es FastAPI y por qué se usa.
+- Explicar por qué es importante usar entorno virtual. (opcional por que vamos a trabajar con PyCharm)
+- Señalar cómo comprobar que las dependencias se instalaron bien (opcional)
+
+👉 Al final de esta fase **NO** debe haber archivos Python creados aún, solo el entorno configurado.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 2 (estructura base y primera app).`
+
+
+---
+
+### 🧩 FASE 2: ESTRUCTURA BASE Y APLICACIÓN FASTAPI INICIAL
+
+**Por qué:** Tener un punto de entrada `main.py` con una instancia de FastAPI y un endpoint de prueba.
+
+**Qué hacer:**
+
+- **Archivo (NUEVO): `C:\Cursos\FastAPI\biblioteca_fastapi\main.py`**  
+  👉 Genera el archivo completo `main.py`, listo para copiar y pegar, que incluya:
+
+  - Creación de la instancia de `FastAPI`.
+  - Un endpoint de prueba simple (por ejemplo `/`) que devuelva un JSON sencillo indicando que la API está viva.
+  - Comentarios claros explicando:
+    - Qué es la instancia `app`.
+    - Qué hace el endpoint de prueba.
+
+- Indicar al alumno cómo ejecutar la app **en el puerto por defecto (8000)** usando `uvicorn` desde la línea de comandos.
+
+- Explicar cómo probar el endpoint inicial desde el navegador o con `curl/Postman`.
+
+💡 Tips:
+- No configurar CORS ni rutas de negocio todavía.
+- Mencionar la URL típica de documentación automática de FastAPI (`/docs`).
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 3 (conexión con MySQL y .env).`
+
+
+---
+
+### 🧩 FASE 3: CONEXIÓN CON MYSQL Y ARCHIVO `.env`
+
+**Por qué:** Tener un motor de BD listo con credenciales seguras y centralizadas.
+
+**Qué hacer:**
+
+- Crear la base de datos `biblioteca_db` en MySQL (por ejemplo, desde MySQL Workbench).
+
+- **Archivo (NUEVO): `C:\Cursos\FastAPI\biblioteca_fastapi\.env`**  
+  👉 Generar el contenido completo del `.env` con las variables de conexión a MySQL (usuario, contraseña, host, puerto, nombre de BD), listo para copiar y pegar.
+
+- **Archivo (NUEVO): `C:\Cursos\FastAPI\biblioteca_fastapi\database.py`**  
+  👉 Generar el archivo completo `database.py` que:
+
+  - Cargue las variables de entorno con `python-dotenv`.
+  - Construya la URL de conexión a MySQL con `PyMySQL` en el formato correcto.
+  - Cree:
+    - `engine`
+    - `SessionLocal` con `sessionmaker`
+    - `Base` con `declarative_base()`
+  - Defina una **dependencia** `get_db()` para FastAPI que:
+    - Abra una sesión por petición.
+    - Cierre la sesión siempre (uso de `try/finally`).
+  - Incluya una **prueba rápida de conexión** ejecutable con `python database.py` (sin usar `SELECT` explícito, solo abriendo una conexión y mostrando un mensaje de éxito o error).
+
+- Explicar brevemente qué hace cada parte del archivo `database.py`.
+
+💡 Tips:
+- Aclarar que **no** se deben quemar credenciales en el código, sino usar `.env`.
+- Explicar por qué se usa una dependencia `get_db()` en FastAPI.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 4 (modelo Libro y configuración de Alembic).`
+
+
+---
+
+### 📚 FASE 4: MODELO `Libro` EN CARPETA `models`
+
+**Por qué:** Modelar la tabla `libros` con SQLAlchemy de forma organizada, usando un paquete `models`.
+
+**Qué hacer (explicación general):**
+
+En esta fase se creará la carpeta `models` y el archivo `libro.py` con la clase `Libro`.
+
+👉 Genera el archivo completo `libro.py` que:
+  
+  - Importe `Base` desde `database.py`.
+  - Defina la clase `Libro` heredando de `Base`.
+  - Configure el nombre de la tabla como `libros`.
+  - Declare las columnas:
+    - `id` (entero, PK, autoincremental).
+    - `titulo` (cadena, requerido).
+    - `autor` (cadena, requerido).
+    - `rating` (entero, requerido, 1–5).
+
+  - Incluya comentarios explicando cada atributo importante.
+  
+💡 Tips:
+- Explicar brevemente la diferencia entre el paquete `models` y cada archivo de modelo individual.
+- Mencionar la importancia de mantener los modelos organizados en una carpeta.
+- Aun no incluir configuracion de alembic, eso se vera en la siguiente fase 
+
+
+### 🧱 FASE 5 — INICIAR ALEMBIC + GENERAR MIGRACIONES
+
+**Por qué:** Sincronizar el modelo `Libro` con la base de datos `biblioteca_db` usando migraciones versionadas.
+  
+**Qué hacer:**
+1) Inicializar Alembic: `alembic init alembic` (verificar `alembic\` y `alembic.ini`).
+2) Configurar `alembic.ini`: ajustar `sqlalchemy.url` con la URL de la BD.
+**Busca exactamente la línea:**
+sqlalchemy.url = driver://user:pass@localhost/dbname
+**Reemplázala COMPLETAMENTE por esta URL lista para copiar y pegar:**
+sqlalchemy.url = mysql+pymysql://root:admin@localhost:3306/biblioteca_db
+3) Editar `alembic\env.py`:
+  - Instruir para:
+    - Importar `Base` y los modelos (`from database import Base` y el import adecuado de `models`).
+    - Asignar `target_metadata = Base.metadata`.
+Luego **busca esta línea**:
+   - `target_metadata = Base.metadata`
+**Reemplázala por:**
+   - target_metadata = Base.metadata
+4) **Archivo (NUEVO): `migrate.py`** (automatizar) (debes generar el archivo con lo siguiente):  
+   - Cargar `.env`.  
+   - Detectar y limpiar **alembic_version** huérfana si aplica.  
+   - Generar revisión autogenerada y aplicar **upgrade head**.  
+5) Ejecutar `python migrate.py` y verificar tabla **libros** en MySQL.
+  
+💡 Tips:
+- Explicar por qué Alembic es mejor que crear tablas “a mano”.
+- Mencionar errores comunes (como olvidar importar los modelos en `env.py`).
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 5 (esquemas Pydantic y validaciones).`
+
+
+---
+
+### 🧾 FASE 6: ESQUEMAS Pydantic Y VALIDACIONES DE `Libro`
+
+**Por qué:** Separar el modelo de BD del modelo de validación para entradas/salidas de la API.
+
+**Qué hacer:**
+
+- **Archivo (NUEVO): `C:\Cursos\FastAPI\biblioteca_fastapi\schemas.py`**  
+  👉 Genera el archivo completo `schemas.py` que defina esquemas Pydantic para `Libro`:
+
+  - `LibroBase`:  
+    - Campos: `titulo`, `autor`, `rating`.
+    - Validaciones:
+      - `titulo` y `autor` como cadenas no vacías.
+      - `rating` como entero entre 1 y 5.
+  - `LibroCreate` (hereda de `LibroBase` y añade lo necesario para creación).
+  - `LibroUpdate` (permite actualizar campos, explicando si son opcionales o no).
+  - `LibroRead` (incluye campo `id` para respuestas).
+
+- Incluir docstrings o comentarios explicando:
+  - Por qué separar `LibroBase`, `LibroCreate`, `LibroUpdate`, `LibroRead`.
+  - Cómo ayuda esto a tener entradas y salidas limpias en la API.
+  - Usa la ultima version estable de Pydantic al dia de hoy para que no haya codigo deprecado
+
+💡 Tips:
+- Aclarar que el modelo SQLAlchemy (`models.Libro`) es distinto a los esquemas Pydantic.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 6 (capa de servicios / CRUD de libros).`
+
+
+---
+
+---
+
+### 🧱 FASE 7: CAPA DE SERVICIOS – FUNCIÓN `listar_libros`
+
+**Por qué:** Comenzar la capa de servicios con la operación más simple: listar todos los libros.
+
+**Qué hacer (explicación general):**
+
+En esta fase se creará la carpeta `services` y el archivo `libro_service.py` con solo la función `listar_libros`.
+No agregues nada mas de las siguientes fases, solo estamos en el caso de listar hasta el momento
+
+**Instrucciones:**
+
+- Crear la carpeta:
+
+  - `C:\Cursos\FastAPI\biblioteca_fastapi\services\`
+
+- **Archivo (NUEVO): `C:\Cursos\FastAPI\biblioteca_fastapi\services\libro_service.py`**  
+  👉 Genera el archivo completo `libro_service.py` que, por ahora, incluya:
+
+  - Importación de la sesión (`Session`) o tipo equivalente.
+  - Importación del modelo `Libro`.
+  - Una función `listar_libros(db)` que:
+    - Reciba la sesión de BD (`db`).
+    - Devuelva la lista completa de registros de la tabla `libros`.
+  - Comentarios explicando:
+    - Qué representa la función.
+    - Por qué se separa en una capa de servicios.
+
+💡 Tips:
+- Explicar que en fases posteriores se irán agregando más funciones a este mismo archivo (crear, obtener por id, actualizar, eliminar).
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 8 (router de libros – endpoint GET para listar).`
+
+
+---
+
+### 🌐 FASE 8: ROUTER DE LIBROS – ENDPOINT `GET /api/libros` (LISTAR)
+
+**Por qué:** Exponer el primer endpoint REST usando el servicio `listar_libros`.
+
+**Qué hacer (explicación general):**
+
+En esta fase se crearán la carpeta `api` y el archivo `libros.py` con un router que solo expondrá el listado de libros.
+
+**Instrucciones:**
+
+- Crear carpeta:
+
+  - `C:\Cursos\FastAPI\biblioteca_fastapi\api\`
+
+- **Archivo (NUEVO): `C:\Cursos\FastAPI\biblioteca_fastapi\api\libros.py`**  
+  👉 Generar el archivo completo `libros.py` que:
+
+  - Cree un `APIRouter` con prefijo `/api/libros` y `tags=["Libros"]`.
+  - Defina solo el endpoint:
+    - `GET /api/libros` → lista todos los libros usando `listar_libros`.
+  - Use `Depends(get_db)` para inyectar la sesión.
+  - Use `response_model` adecuado (`List[LibroRead]`).
+  - Maneje la conversión de modelos a esquemas de respuesta.
+  - Incluya comentarios explicando la ruta.
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\main.py`**  
+  👉 Actualizar `main.py` (marcando solo las líneas nuevas como `# [NUEVO]`) para:
+
+  - Importar el router de libros.
+  - Incluir el router en la aplicación (`app.include_router(...)`).
+  - Mantener el endpoint de prueba inicial.
+
+💡 Tips:
+- Explicar brevemente qué es un `APIRouter` y por qué facilita la organización de rutas.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 9 (pruebas con Postman del listado de libros).`
+
+
+---
+
+### 🧪 FASE 9: PRUEBAS CON POSTMAN – LISTAR LIBROS
+
+**Por qué:** Validar el correcto funcionamiento del primer endpoint del CRUD.
+
+**Qué hacer (explicación general):**
+
+En esta fase solo se realizarán pruebas del endpoint de listado de libros; no se modificará el código (salvo ajustes necesarios si se detecta un error).
+
+**Instrucciones:**
+
+- Generar un SQL para Insertar **3 libros** de ejemplo en MySQL Workbench (solo el SQL directo).
+
+- Explicar cómo levantar la API con `uvicorn` (puerto por defecto 8000).
+
+- Indicar cómo probar en Postman:
+
+  - Método: `GET`
+  - URL: `http://localhost:8000/api/libros`
+  - Comportamiento esperado:
+    - Lista vacía si no hay datos.
+    - Estructura JSON acorde al esquema `LibroRead`.
+
+- Explicar cómo consultar la documentación automática en `/docs` y verificar la descripción del endpoint.
+
+- Si detectas algún error típico (por ejemplo, import faltante), indicar la corrección como un pequeño ajuste marcando el archivo correspondiente como (MODIFICADO).
+
+💡 Tips:
+- Recalcar la importancia de probar cada operación tan pronto se implementa, antes de seguir con las siguientes fases.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 10 (capa de servicios: crear libro).`
+
+
+---
+
+### 🧱 FASE 10: CAPA DE SERVICIOS – FUNCIÓN `crear_libro`
+
+**Por qué:** Agregar la operación de creación de libros a la capa de servicios.
+
+**Qué hacer (explicación general):**
+
+En esta fase se ampliará `libro_service.py` para incluir la función `crear_libro`, manteniendo el archivo completo actualizado.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\services\libro_service.py`**  
+  👉 Regenerar el archivo completo `libro_service.py` (no solo fragmentos) que ahora incluya:
+
+  - La función existente `listar_libros`.
+  - Una nueva función `crear_libro(db, datos: LibroCreate)` que:
+    - Cree una instancia de `Libro` a partir de los datos del esquema.
+    - Guarde el registro en la BD.
+    - Devuelva el objeto persistido.
+  - Comentarios explicando el flujo de creación.
+
+- Marcar con `# [NUEVO]` únicamente las líneas nuevas dentro del archivo ya existente.
+
+💡 Tips:
+- Explicar brevemente cómo se traducen los datos de Pydantic al modelo SQLAlchemy.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 11 (router: endpoint POST /api/libros).`
+
+
+---
+
+### 🌐 FASE 11: ROUTER DE LIBROS – ENDPOINT `POST /api/libros` (CREAR)
+
+**Por qué:** Permitir la creación de nuevos libros desde la API.
+
+**Qué hacer (explicación general):**
+
+En esta fase se ampliará el router `libros.py` para incluir el endpoint de creación de libros.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\api\libros.py`**  
+  👉 Regenerar el archivo completo `libros.py` que ahora incluya:
+
+  - El endpoint `GET /api/libros` existente.
+  - Un nuevo endpoint `POST /api/libros` que:
+    - Reciba un cuerpo tipo `LibroCreate`.
+    - Llame a `crear_libro` en la capa de servicios.
+    - Devuelva un `LibroRead`.
+    - Use el código de estado HTTP apropiado (por ejemplo, 201).
+
+- Marcar con `# [NUEVO]` solo las partes nuevas en este archivo.
+
+💡 Tips:
+- Explicar brevemente la diferencia entre datos de entrada (request body) y datos de salida (response_model).
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 12 (pruebas con Postman – crear libro).`
+
+
+---
+
+### 🧪 FASE 12: PRUEBAS CON POSTMAN – CREAR LIBRO
+
+**Por qué:** Validar que la creación de libros funciona correctamente.
+
+**Qué hacer (explicación general):**
+
+En esta fase se probará el endpoint `POST /api/libros` y se verificará el comportamiento completo.
+
+**Instrucciones:**
+
+- Mostrar cómo enviar una solicitud `POST` en Postman:
+
+  - URL: `http://localhost:8000/api/libros`
+  - Body (JSON de ejemplo con rating válido).
+  - Explicar la respuesta esperada.
+
+- Volver a probar `GET /api/libros` y confirmar que ahora se ve el nuevo registro.
+
+- Verificar en `/docs` la documentación del endpoint `POST`.
+
+💡 Tips:
+- Probar también casos inválidos (rating fuera de rango) y describir brevemente el comportamiento esperado (errores de validación).
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 13 (capa de servicios: obtener libro por id).`
+
+
+---
+
+### 🧱 FASE 13: CAPA DE SERVICIOS – FUNCIÓN `obtener_libro_por_id`
+
+**Por qué:** Permitir la consulta individual de un libro.
+
+**Qué hacer (explicación general):**
+
+Se ampliará `libro_service.py` para incluir `obtener_libro_por_id`.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\services\libro_service.py`**  
+  👉 Regenerar el archivo completo con:
+
+  - `listar_libros`
+  - `crear_libro`
+  - Nueva función `obtener_libro_por_id(db, id: int)` que:
+    - Busque un libro por su id.
+    - Devuelva el libro o `None` si no existe.
+  - Comentarios explicando el uso.
+
+- Marcar como `# [NUEVO]` la nueva función.
+
+💡 Tips:
+- Explicar brevemente cómo manejar el caso “no encontrado” desde la capa de servicios.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 14 (router: endpoint GET /api/libros/{id}).`
+
+
+---
+
+### 🌐 FASE 14: ROUTER DE LIBROS – ENDPOINT `GET /api/libros/{id}`
+
+**Por qué:** Exponer la consulta de un libro específico por su identificador.
+
+**Qué hacer (explicación general):**
+
+Se ampliará el router `libros.py` con `GET /api/libros/{id}`.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\api\libros.py`**  
+  👉 Regenerar el archivo completo con:
+
+  - `GET /api/libros`
+  - `POST /api/libros`
+  - Nuevo endpoint `GET /api/libros/{id}` que:
+    - Use `Path` o similar para el parámetro `id`.
+    - Llame a `obtener_libro_por_id`.
+    - Lance `HTTPException(status_code=404, ...)` si el libro no existe.
+    - Devuelva un `LibroRead` cuando se encuentra.
+
+- Usar `# [NUEVO]` solo en lo añadido.
+
+💡 Tips:
+- Comentar brevemente cómo manejar errores HTTP con `HTTPException`.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 15 (pruebas con Postman – obtener libro por id).`
+
+
+---
+
+### 🧪 FASE 15: PRUEBAS CON POSTMAN – OBTENER LIBRO POR ID
+
+**Por qué:** Confirmar que la consulta individual funciona.
+
+**Qué hacer (explicación general):**
+
+Se probará `GET /api/libros/{id}` con ids válidos e inválidos.
+
+**Instrucciones:**
+
+- Probar en Postman:
+
+  - `GET http://localhost:8000/api/libros/1` (o el id que exista).
+  - Probar un id inexistente y verificar el error 404.
+
+- Revisar `/docs` para ver el detalle del endpoint y su esquema de respuesta.
+
+💡 Tips:
+- Señalar la importancia de devolver 404 cuando el recurso no existe.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 16 (capa de servicios: actualizar libro).`
+
+
+---
+
+### 🧱 FASE 16: CAPA DE SERVICIOS – FUNCIÓN `actualizar_libro`
+
+**Por qué:** Añadir capacidad de modificación de libros existentes.
+
+**Qué hacer (explicación general):**
+
+Se agregará la función `actualizar_libro` a `libro_service.py`.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\services\libro_service.py`**  
+  👉 Regenerar el archivo completo con:
+
+  - `listar_libros`
+  - `crear_libro`
+  - `obtener_libro_por_id`
+  - Nueva función `actualizar_libro(db, id: int, datos: LibroUpdate)` que:
+    - Localice el libro.
+    - Aplique los cambios recibidos.
+    - Maneje el caso de libro no encontrado (por ejemplo devolviendo `None` o levantando una excepción que luego trate el router).
+  - Comentarios explicando los pasos.
+
+- Marcar las partes nuevas con `# [NUEVO]`.
+
+💡 Tips:
+- Explicar la diferencia entre actualización total vs. parcial (incluso si aquí se implementa solo una de ellas).
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 17 (router: endpoint PUT /api/libros/{id}).`
+
+
+---
+
+### 🌐 FASE 17: ROUTER DE LIBROS – ENDPOINT `PUT /api/libros/{id}`
+
+**Por qué:** Exponer la operación de actualización de libros.
+
+**Qué hacer (explicación general):**
+
+Se añadirá `PUT /api/libros/{id}` al router `libros.py`.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\api\libros.py`**  
+  👉 Regenerar el archivo completo con:
+
+  - `GET /api/libros`
+  - `POST /api/libros`
+  - `GET /api/libros/{id}`
+  - Nuevo endpoint `PUT /api/libros/{id}` que:
+    - Reciba un cuerpo `LibroUpdate`.
+    - Llame a `actualizar_libro`.
+    - Devuelva error 404 si el libro no existe.
+    - Devuelva `LibroRead` con los datos actualizados.
+
+- Marcar el código nuevo con `# [NUEVO]`.
+
+💡 Tips:
+- Señalar la importancia de devolver el recurso actualizado en la respuesta.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 18 (pruebas con Postman – actualizar libro).`
+
+
+---
+
+### 🧪 FASE 18: PRUEBAS CON POSTMAN – ACTUALIZAR LIBRO
+
+**Por qué:** Confirmar que las actualizaciones se aplican correctamente.
+
+**Qué hacer (explicación general):**
+
+Se probará el endpoint `PUT /api/libros/{id}` con datos válidos.
+
+**Instrucciones:**
+
+- Probar en Postman:
+
+  - `PUT http://localhost:8000/api/libros/{id}` con un body JSON que modifique algún campo.
+  - Verificar que la respuesta muestre los datos actualizados.
+  - Volver a hacer `GET /api/libros/{id}` para confirmar.
+
+💡 Tips:
+- Probar cambios parciales o completos según cómo se haya definido `LibroUpdate`.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 19 (capa de servicios: eliminar libro).`
+
+
+---
+
+### 🧱 FASE 19: CAPA DE SERVICIOS – FUNCIÓN `eliminar_libro`
+
+**Por qué:** Completar la capa de servicios con la operación de borrado.
+
+**Qué hacer (explicación general):**
+
+Se añadirá `eliminar_libro` a `libro_service.py`.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\services\libro_service.py`**  
+  👉 Regenerar el archivo completo con:
+
+  - `listar_libros`
+  - `crear_libro`
+  - `obtener_libro_por_id`
+  - `actualizar_libro`
+  - Nueva función `eliminar_libro(db, id: int)` que:
+    - Busque el libro.
+    - Lo elimine si existe.
+    - Maneje el caso de libro no encontrado.
+  - Comentarios explicando la lógica.
+
+- Marcar la nueva función con `# [NUEVO]`.
+
+💡 Tips:
+- Explicar brevemente consideraciones sobre borrados lógicos vs. físicos (aunque aquí se use el borrado físico).
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 20 (router: endpoint DELETE /api/libros/{id}).`
+
+
+---
+
+### 🌐 FASE 20: ROUTER DE LIBROS – ENDPOINT `DELETE /api/libros/{id}`
+
+**Por qué:** Exponer la operación de borrado de libros a través de la API.
+
+**Qué hacer (explicación general):**
+
+Se añadirá `DELETE /api/libros/{id}` al router `libros.py`.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\api\libros.py`**  
+  👉 Regenerar el archivo completo con todos los endpoints previos y:
+
+  - Nuevo endpoint `DELETE /api/libros/{id}` que:
+    - Llame a `eliminar_libro`.
+    - Devuelva error 404 si el libro no existe.
+    - Devuelva un mensaje simple o un código de estado adecuado (por ejemplo, 204 o 200 con mensaje).
+
+- Marcar las partes nuevas con `# [NUEVO]`.
+
+💡 Tips:
+- Comentar brevemente las diferencias entre devolver contenido o no en una respuesta de borrado.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 21 (pruebas con Postman – eliminar libro).`
+
+
+---
+
+### 🧪 FASE 21: PRUEBAS CON POSTMAN – ELIMINAR LIBRO
+
+**Por qué:** Confirmar que el borrado funciona correctamente y que la lista se actualiza.
+
+**Qué hacer (explicación general):**
+
+Se validará el endpoint de borrado, así como su efecto en las consultas de listado y detalle.
+
+**Instrucciones:**
+
+- Probar en Postman:
+
+  - `DELETE http://localhost:8000/api/libros/{id}` para un libro existente.
+  - Confirmar la respuesta (mensaje o código de estado).
+  - Repetir `GET /api/libros` para ver que el libro ya no está.
+  - Repetir `GET /api/libros/{id}` para verificar que ahora regresa 404.
+
+💡 Tips:
+- Sugerir una pequeña lista de pruebas manuales: crear varios libros, listarlos, editarlos y luego eliminarlos.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 22 (configuración de CORS).`
+
+
+---
+
+### 🔐 FASE 22: CONFIGURACIÓN DE CORS
+
+**Por qué:** Permitir que futuros frontends (especialmente React con Vite) consuman la API sin errores de CORS.
+
+**Qué hacer (explicación general):**
+
+Se configurará el middleware de CORS en `main.py`.
+
+**Instrucciones:**
+
+- **Archivo (MODIFICADO): `C:\Cursos\FastAPI\biblioteca_fastapi\main.py`**  
+  👉 Regenerar el archivo completo `main.py` para:
+
+  - Importar y configurar `CORSMiddleware`.
+  - Agregar `allow_origins` que incluya al menos:
+    - `http://localhost:4200` (Angular)
+    - `http://localhost:5173` (React con Vite)
+  - Configurar `allow_methods`, `allow_headers` y, si aplica, `allow_credentials`.
+
+- Marcar las nuevas secciones con `# [NUEVO]`.
+
+- Explicar brevemente:
+  - Qué es CORS.
+  - Por qué se necesita al trabajar con frontends en otros puertos.
+
+💡 Tips:
+- Señalar que, aunque todavía no exista el frontend, la API ya queda preparada para ser consumida.
+
+Termina la respuesta con:  
+`¿Continuamos? Responde: **listo** para la Fase 23 (pruebas generales en puerto por defecto).`
+
+
+### 🚀 FASE 23: CAMBIO AL PUERTO 8080 Y REPASO FINAL DE PRUEBAS (opcional)
+
+**Por qué:** Ajustar la API al puerto de trabajo estandarizado (8080) y confirmar que todo sigue funcionando.
+
+**Qué hacer (explicación general):**
+
+Se explicará cómo levantar la API en el puerto 8080 y se hará un repaso rápido de las pruebas básicas.
+
+**Instrucciones:**
+
+- Mostrar cómo ejecutar `uvicorn` de modo que la API quede disponible en:
+
+  - `http://localhost:8080/`
+  - Documentación: `http://localhost:8080/docs`
+  - API de libros: `http://localhost:8080/api/libros`
+
+- Indicar si se usará:
+
+  - Comando directo en consola (`uvicorn main:app --reload --port 8080`), o
+  - Configuración equivalente en el IDE.
+
+- Repetir rápidamente pruebas básicas:
+
+  - Crear un libro.
+  - Listar libros.
+  - Consultar uno por id.
+  - Actualizarlo.
+  - Eliminarlo.
+
+💡 Tips:
+- Resaltar que la API está lista para ser consumida por un frontend en React (Vite) o Angular sin cambios adicionales en el backend.
+
+---
+
+✨ MENSAJE FINAL
+----------------
+Cuando completes la Fase 24, muestra un mensaje de cierre similar a este (adaptado al contexto):
+
+> ¡Felicidades! Has construido un **backend REST completo** con **FastAPI** y **MySQL** para tu **Biblioteca Personal** 📚.  
+> Aprendiste a:
+> - Configurar un proyecto FastAPI con entorno virtual y dependencias profesionales.  
+> - Modelar la tabla `libros` con SQLAlchemy y mantener el esquema con Alembic.  
+> - Diseñar esquemas Pydantic para validaciones y respuestas limpias.  
+> - Implementar paso a paso la capa de servicios para el CRUD de libros.  
+> - Exponer endpoints REST organizados con `APIRouter`, añadiendo y probando cada operación por separado.  
+> - Configurar CORS y ejecutar la API en `http://localhost:8080/api/libros`, lista para ser consumida por un frontend en React (Vite) o Angular.
+
+A partir de aquí, el siguiente paso será **construir el frontend en React con Vite** consumiendo esta API, o seguir realizando pruebas avanzadas con Postman.
