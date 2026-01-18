@@ -1,0 +1,251 @@
+Ejecuta el siguiente prompt sin saltarte ninguna instrucción:
+
+====================================================================
+🧠 PROYECTO REACT – SISTEMA DE BIBLIOTECA PERSONAL
+(Frontend con React, Vite, Axios, Bootstrap Dark Mode y React Router)
+====================================================================
+
+👋 Bienvenida
+-------------
+Construiremos una aplicación web profesional en React + Vite para un
+Sistema de Biblioteca Personal.
+
+El objetivo es implementar un CRUD completo para gestionar libros.
+
+Cada fase incluye:
+- Por qué (contexto)
+- Qué hacer (instrucciones)
+- Tips
+
+--------------------------------------------------------------------
+📣 INSTRUCCIONES GENERALES — MODO INTERACTIVO ESTRICTO
+--------------------------------------------------------------------
+
+1) Muestra solo una fase por respuesta.
+2) No anticipes nada de fases futuras.
+3) Cierra cada fase con:
+      ¿Continuamos? Responde: listo para la siguiente fase (Fase X).
+4) Avanza únicamente cuando yo escriba "listo".
+5) Si hago preguntas fuera del flujo:
+      ¿Retomamos la guía? Escribe: listo para continuar en la Fase X.
+6) Despues de mostrar el titulo y objetivo de cada fase, debes agregar un bloque (pero justo despues del titulo y objetivo, no hasta el finalizar
+   ya que el objetivo es que el alumno tenga una vision clara de que archivos se van a modificar, si lo pones al final ya no ayuda mucho):
+      📁 NUEVOS ARCHIVOS / MODIFICACIONES
+      mostrando un árbol del proyecto indicando (NUEVO) o (MODIFICADO).
+7) Siempre entregar archivos completos, nunca fragmentos.
+8) Usa // [NUEVO] o // [MODIFICADO] solo en líneas de archivos existentes.
+9) En archivos nuevos NO agregues marcas.
+10) Si toda la funcion es nueva, solo poner // [NUEVO] al inicio del metodo, no marcar las lineas dentro del metodo
+   para no ensuciar demasiado el codigo
+11) Agrega // [EXISTENTE] si ya no debemos modificar el codigo y ya era un metodo existente al inicio del metodo 
+11) No agregues librerías no autorizadas.
+
+--------------------------------------------------------------------
+📦 ENTIDAD PRINCIPAL — LIBROS
+--------------------------------------------------------------------
+Campos:
+- id
+- titulo
+- autor
+- rating (número entero 1–5, sin librerías extra)
+
+--------------------------------------------------------------------
+⚙️ TECNOLOGÍAS
+--------------------------------------------------------------------
+- React + Vite
+- Axios
+- Bootstrap 5 por CDN con data-bs-theme="dark"
+- react-router-dom (solo desde Fase 4)
+- JavaScript (no TypeScript)
+
+--------------------------------------------------------------------
+📚 API BASE
+--------------------------------------------------------------------
+Backend disponible en:
+http://localhost:8080/api/libros
+
+Constante urlBase:
+const urlBase = "http://localhost:8080/api/libros";
+
+--------------------------------------------------------------------
+🧱 ESTRUCTURA BASE (SE IRÁ CREANDO)
+--------------------------------------------------------------------
+C:\Cursos\React\biblio-react\
+  ├── index.html
+  ├── package.json
+  ├── vite.config.js
+  └── src\
+      ├── App.jsx
+      ├── main.jsx
+      ├── api\
+      │   └── libros.js
+      └── libros\
+      │     ├── ListadoLibros.jsx
+      │     ├── AgregarLibro.jsx
+      │     └── EditarLibro.jsx
+      └── componentes\
+            └── Navegacion.jsx
+
+====================================================================
+🚀 PLAN DE FASES — DETALLADO Y PASO A PASO
+====================================================================
+
+FASE 1 — CONFIGURACION INICIAL DEL PROYECTO
+- Crear proyecto con Vite
+- Crear una carpeta en C:\Cursos\React 
+
+- Abrir la carpeta con Visual Studio Code
+  ir a la terminar y ejecutar el siguiente comando: 
+
+  npm create vite@latest biblio-react -- --template react
+
+Responder estas preguntas, aunque pueden variar:
+Ok to proceed? (y) y
+
+> npx
+> create-vite biblio-react
+
+│
+◇  Select a framework:
+│  React
+│
+◇  Select a variant:
+│  JavaScript
+│
+◇  Use rolldown-vite (Experimental)?:
+│  No
+│
+◇  Install with npm and start now?
+│  Yes
+
+- Abrir la carpeta del proyecto desde Visual Studio Code para empezar a trabajar:
+
+- Ir a la terminal e instalar dependencias:
+npm install axios
+
+react-router-dom se instalará hasta la Fase 5, de acuerdo al plan. Aquí todavía no lo agregamos.
+
+- Ejecutar la aplicacion inicial con el comando:
+  npm run dev
+- Ir a: http://localhost:5173/
+  y Confirmar que se visualice la aplicacion
+  
+- No mencionar los archivos que de momento se generaron de manera automatica, por que el codigo no se debe tocar 
+  de cualquier manera, se va a dejar asi, a menos que se modifique se menciona, sino no
+
+FASE 2 — AGREGAR BOOTSTRAP EN MODO OSCURO Y TITULO INICIAL
+
+- Configurar Bootstrap incluyendo modo dark, y tambien para agregar iconos de bootstrap
+  En index.html debe quedar asi el elemento html: 
+  <html lang="en" data-bs-theme="dark">
+
+- Probar render inicial
+  - El titulo crealo en color amarillo, centrado horizontalmente, pero verticalmente no
+    solo con estilos de bootstrap, no manejar estilos personalizados 
+  - Agregar un icono referente al tema de bibliotecas antes del titulo de la pagina (icono de bootstrap)
+  - Eliminar los archivos css de estilos personalizados por default y sus referencias para que funcione bien bootstrap
+    - src/
+      - index.css
+      - App.css
+Y en main.jsx suele venir, eliminar estas referencias de lo contrario no se ve bien bootstrap:
+import './index.css';
+
+- Agregar los pasos para validar lo hecho. Ej.
+- Ejecutar la aplicacion inicial con el comando (si ya se inicio ya no hay que volver a ejecutar la app):
+  npm run dev
+- Ir a: http://localhost:5173/
+  y Confirmar que se visualice la aplicacion
+
+
+FASE 3 — Crear carpeta api y archivo libros.js (solo URL base + axios)
+- Centralizar axios
+- Definir urlBase
+
+FASE 4 — Agregar función listarLibros() (solo lógica)
+- Programar GET
+- De momento aun no vamos a probar este metodo
+
+FASE 5 — Crear ListadoLibros.jsx (solo estructura básica)
+- Título "Listado de Libros", respeta el titulo que ya se habia generado, 
+  incluyendo un icono del tema de bootstrap antes del titulo (usar el mismo icono ya usado anteriormente)
+- Texto inicial
+- Conexión con App.jsx
+
+FASE 6 — Tabla Bootstrap con datos reales
+- useEffect para llamar listarLibros()
+- Columnas: ID, Título, Autor, Rating
+- Aun no agregar los Botones Editar / Eliminar, agregarlos hasta la fase que le corresponde
+- Usar un color azul de fondo para el cabecero de la tabla
+  solo usar estilos de bootstrap, no estilos css personalizados 
+  Ej.  <thead className="table-primary">
+
+FASE 7 — Instalar react-router-dom + crear Navegacion.jsx
+- Navbar Bootstrap
+- Rutas iniciales:
+    / → Listado
+- La ruta de /agregar agregarla hasta la fase que sea necesario	
+- La ruta de /editar/:id agregarla hasta la fase donde sea necesario
+
+FASE 8 — Crear AgregarLibro.jsx (formulario vacío)
+- Inputs: título, autor, rating (number)
+- Botones Guardar / Cancelar
+- Agregar la ruta de /agregar a App.jsx
+- Agregar la ruta de /agrgar a Navegacion.jsx
+- Sin lógica aún
+
+FASE 9 — Programar crearLibro() en libros.js
+- Implementar POST
+- Validaciones básicas
+
+FASE 10 — AgregarLibro.jsx: conectar formulario a crearLibro()
+- useState
+- Submit
+- Redirección
+- Alertas
+
+FASE 11 — obtenerLibroPorId() en libros.js
+- GET por id
+
+Fase 12 - Agregar botón de editar y su ruta
+- Agregar la ruta /editar/:id en App.jsx
+- Agregar boton del editar en cada registro del listado incluyendo un icono antes del texto Editar (color azul)
+- Conectar el boton con la ruta: /editar/:id proporcionando el id del registro a editar
+- Crear el componente vacio de EditarLibro.jsx para que se pueda probar el flujo y el boton de editar, pero que no tenga aun formulario, solo un 
+  mensaje que se muestra correctamente este componente 
+- No se debe modificar el componente de Navegacion, aca no va nada de edicion  
+
+FASE 13 — Crear EditarLibro.jsx (estructura vacía)
+Formulario igual que agregar
+- Aun no lleva logica
+
+FASE 14 — EditarLibro.jsx: precargar datos
+- useParams()
+- obtenerLibroPorId()
+- Rellenar campos
+
+FASE 15 — actualizarLibro() en libros.js
+- PUT por id
+
+FASE 16 — EditarLibro.jsx: conectar formulario a actualizarLibro()
+- Enfatizar que ahora el formulario ya procesa el boton de Guardar Cambios
+- Guardar cambios
+- Redirigir
+- Alertas
+
+FASE 17 — eliminarLibro() en libros.js
+- DELETE por id
+
+FASE 18 — Agregar boton de eliminar
+- No se requiere ruta de eliminar (no se creara una nueva pantalla)
+- Agregar boton de eliminar en cada registro del listado, incluyendo un icono antes del texto Eliminar (color rojo) 
+- Conectar el boton para eliminar el id del registro selecionado
+- Eliminar el registro al presionar el boton, solo agregar confirmacion basica al eliminar confirm() 
+- Refrescar el listado
+
+--------------------------------------------------------------------
+✨ MENSAJE FINAL
+--------------------------------------------------------------------
+Al finalizar la Fase 18 debes mostrar un mensaje de felicitaciones, cierre profesional,
+indicando que el alumno completó un CRUD de Biblioteca Personal con
+React + Vite, paso a paso, con navegación, formularios controlados,
+consumo de API y manejo de estado.
